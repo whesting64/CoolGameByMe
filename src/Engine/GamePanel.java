@@ -28,7 +28,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     //game objects
     public static ArrayList<Rectangle> platforms = new ArrayList<>();
-    Player player;
+    public static Player player;
     public static ArrayList<Entity> enemies = new ArrayList<>();
 
     public GamePanel() {
@@ -76,10 +76,6 @@ public class GamePanel extends JPanel implements Runnable {
             for (Entity e : enemies) {
                 if (e instanceof Enemy) {
                     e.update(player);
-
-                    if(e.collidesWith(player)) {
-                        System.out.println("oof");
-                    }
 
                 }
             }
