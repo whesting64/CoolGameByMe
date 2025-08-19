@@ -1,9 +1,15 @@
+package Engine;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener {
 
-    public boolean upPressed, downPressed, leftPressed, rightPressed, spacePressed;
+    public static boolean upPressed;
+    public static boolean downPressed;
+    public static boolean leftPressed;
+    public static boolean rightPressed;
+    public static boolean spacePressed;
 
     @Override
     public void keyTyped(KeyEvent e) {
