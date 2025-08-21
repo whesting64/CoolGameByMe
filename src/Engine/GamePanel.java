@@ -9,7 +9,6 @@ import java.awt.*;
 import java.util.ArrayList;
 
 
-
 public class GamePanel extends JPanel implements Runnable {
 
     //screen settings
@@ -42,8 +41,8 @@ public class GamePanel extends JPanel implements Runnable {
 
         platforms.add(new Rectangle(0, screenHeight - tileSize, screenWidth, tileSize * 2));
 
-        player = new Player(tileSize * 3, tileSize * 3, scale, 150, 1);
-        enemies.add(new Enemy(tileSize * 4, tileSize * 4, scale/4, 3 * tileSize, 1));
+        player = new Player(tileSize * 3, tileSize * 3, scale, 150, 1, 10);
+        enemies.add(new Enemy(tileSize * 4, tileSize * 4, scale/4, 3 * tileSize, 1, 4));
 
 
     }
@@ -64,7 +63,7 @@ public class GamePanel extends JPanel implements Runnable {
         double drawInterval = (double) 1000000000 / FPS;
         double nextDrawTime = System.nanoTime() + drawInterval;
 
-        while (gameThread != null) {
+        while (gameThread != null && player.health > 0) {
 
 
             if (KeyHandler.spacePressed) {
@@ -97,6 +96,8 @@ public class GamePanel extends JPanel implements Runnable {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
+
+            enemies.removeIf(e -> e.health <= 0);
         }
 
     }
@@ -114,6 +115,20 @@ public class GamePanel extends JPanel implements Runnable {
         for (Entity enemy : enemies) {
             enemy.draw(g2, debugMode);
         }
+
+        if (player.health == 0) {
+            g2.setColor(Color.RED);
+            g2.fillRect(0, 0, screenWidth, screenHeight);
+            g2.setColor(Color.black);
+            g2.setFont(new Font("Arial", Font.BOLD, 200));
+            FontMetrics fm = g2.getFontMetrics();
+            int textWidth = fm.stringWidth("Oof");
+            int textHeight = fm.getAscent();
+            int x = (screenWidth - textWidth) / 2;
+            int y = (screenHeight + textHeight) / 2;
+            g2.drawString("Oof", x, y);
+        }
+
         g2.dispose();
 
     }

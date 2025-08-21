@@ -4,27 +4,28 @@ import Engine.GamePanel;
 
 import java.awt.*;
 
-import static java.lang.Math.round;
-import static java.lang.Math.sqrt;
-
 
 public abstract class Entity{
 
-    // positons
+    // entity stats
     public int entityX;
     public int entityY;
     public int entitySpeed;
     public int viewRange;
     public int lookDirection;
     public int dx = 0, dy = 0;
+    public int health;
+    int immunity = 120;
+    int immunityTimer = 0;
 
-    public Entity(int startX, int startY, int speed, int viewRange, int lookDirection){
+    public Entity(int startX, int startY, int speed, int viewRange, int lookDirection, int health){
 
         this.entityX = startX;
         this.entityY = startY;
         this.entitySpeed = speed;
         this.viewRange = viewRange;
         this.lookDirection = lookDirection;
+        this.health = health;
 
     }
 
@@ -85,8 +86,16 @@ public abstract class Entity{
         }
     }
 
+    void getHit() {
+        if (immunityTimer == 0) {
+            immunityTimer = immunity;
+            health -= 1;
+        }
+    }
 
-    public void update(){}
+
+    public void update(){
+    }
 
     public abstract void update(Player player);
 
@@ -105,6 +114,12 @@ public abstract class Entity{
     public int getViewRange() {
         return viewRange;
     }
+    public int getLookDirection() {
+        return lookDirection;
+    }
+    public int getHealth() {
+        return health;
+    }
 
     // entity setters
     public void setEntityX(int entityX) {
@@ -118,5 +133,11 @@ public abstract class Entity{
     }
     public void setViewRange(int viewRange) {
         this.viewRange = viewRange;
+    }
+    public void setLookDirection(int lookDirection) {
+        this.lookDirection = lookDirection;
+    }
+    public void setHealth(int health) {
+        this.health = health;
     }
 }

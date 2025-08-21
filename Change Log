@@ -1,0 +1,32 @@
+Version 0.0.1 (8/20/25)
+Created player.
+
+Added collision
+
+Separated out entities.
+
+Added enemies that chase player.
+
+Remove diagonal movement.
+
+Version 0.0.2 8/20/25
+Added back diagonal movement
+
+Fixed scaling issues
+
+Added look directions
+
+Added a "hit mechanic" that does nothing
+
+Version 0.0.3 8/20/25
+Added health
+
+Added player takes damage on contact with enemy
+
+Changed the size of swing for player
+
+Added enemy takes damage when it makes contact with players sword swing
+
+Added player death mechanic where the game loop breaks and death message is shown
+
+Added enemy death mechanic where it is removed from ArrayList and is removed from the map
