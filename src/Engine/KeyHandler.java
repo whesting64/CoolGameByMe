@@ -10,6 +10,10 @@ public class KeyHandler implements KeyListener {
     public static boolean leftPressed;
     public static boolean rightPressed;
     public static boolean spacePressed;
+    public static boolean upArrowPressed;
+    public static boolean downArrowPressed;
+    public static boolean leftArrowPressed;
+    public static boolean rightArrowPressed;
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -35,6 +39,18 @@ public class KeyHandler implements KeyListener {
         if(code == KeyEvent.VK_SPACE){
             spacePressed = true;
         }
+        if(code == KeyEvent.VK_UP){
+            upArrowPressed = true;
+        }
+        if(code == KeyEvent.VK_DOWN){
+            downArrowPressed = true;
+        }
+        if(code == KeyEvent.VK_LEFT){
+            leftArrowPressed = true;
+        }
+        if(code == KeyEvent.VK_RIGHT){
+            rightArrowPressed = true;
+        }
 
     }
 
@@ -56,6 +72,18 @@ public class KeyHandler implements KeyListener {
         }
         if(code == KeyEvent.VK_SPACE){
             spacePressed = false;
+        }
+        if(code == KeyEvent.VK_UP){
+            upArrowPressed = false;
+        }
+        if(code == KeyEvent.VK_DOWN){
+            downArrowPressed = false;
+        }
+        if(code == KeyEvent.VK_LEFT){
+            leftArrowPressed = false;
+        }
+        if(code == KeyEvent.VK_RIGHT){
+            rightArrowPressed = false;
         }
 
 
