@@ -13,11 +13,11 @@ import java.util.ArrayList;
 public class GamePanel extends JPanel implements Runnable {
 
     //screen settings
-    final int originalTileSize = 16;
-    final int scale = 3;
-    final int tileSize = originalTileSize * scale;
-    final int maxScreenCol = 16;
-    final int maxScreenRow = 16;
+    static final int originalTileSize = 16;
+    public static int scale = 4;
+    static final int tileSize = originalTileSize * scale;
+    final int maxScreenCol = 10;
+    final int maxScreenRow = 9;
     final int screenWidth = maxScreenCol * tileSize;
     final int screenHeight = maxScreenRow * tileSize;
     int FPS = 60;
@@ -40,16 +40,16 @@ public class GamePanel extends JPanel implements Runnable {
         this.addKeyListener(keyHandler);
         this.setFocusable(true);
 
-        platforms.add(new Rectangle(0, screenHeight - tileSize * 2, screenWidth, tileSize * 2));
-        platforms.add(new Rectangle(tileSize * 4, screenHeight - tileSize * 4, tileSize, tileSize));
-        platforms.add(new Rectangle(tileSize * 7, screenHeight - tileSize * 6, tileSize, tileSize));
-        platforms.add(new Rectangle(tileSize * 12, screenHeight - tileSize * 10, tileSize, tileSize));
+        platforms.add(new Rectangle(0, screenHeight - tileSize, screenWidth, tileSize * 2));
 
-        player = new Player(100, 100, 4, 200);
-        enemies.add(new Enemy(200, 200, 1, 200));
-        enemies.add(new Enemy(300, 300, 3, 100));
+        player = new Player(tileSize * 3, tileSize * 3, scale, 150, 1);
+        enemies.add(new Enemy(tileSize * 4, tileSize * 4, scale/4, 3 * tileSize, 1));
 
 
+    }
+
+    public static int getTileSize() {
+        return tileSize;
     }
 
     public void  startGameThread() {
@@ -106,7 +106,7 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
 
-        g2.setColor(Color.BLACK);
+        g2.setColor(Color.black);
         for (Rectangle platform : GamePanel.platforms) {
             g2.fillRect(platform.x, platform.y, platform.width, platform.height);
         }
