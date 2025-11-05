@@ -3,6 +3,9 @@ package Engine;
 import Entities.Entity;
 import Entities.Player;
 import Entities.Enemy;
+import Pathfinding.Node;
+import map.Map;
+import map.Tiles;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,14 +16,20 @@ public class GamePanel extends JPanel implements Runnable {
 
     //screen settings
     static final int originalTileSize = 16;
-    public static int scale = 4;
+    final static int scale = 4;
     static final int tileSize = originalTileSize * scale;
-    final int maxScreenCol = 10;
-    final int maxScreenRow = 9;
-    final int screenWidth = maxScreenCol * tileSize;
-    final int screenHeight = maxScreenRow * tileSize;
+    static final int maxScreenCol = 15;
+    static final int maxScreenRow = 15;
+    static final int screenWidth = maxScreenCol * tileSize;
+    static final int screenHeight = maxScreenRow * tileSize;
     int FPS = 60;
-    public boolean debugMode = false;
+    public static boolean debugMode = true;
+    public final Rectangle bottomBar;
+    public static int[][] map;
+    public static Tiles[] tiles = Tiles.loadTilesImg();
+
+    public int playerStartX = 3, playerStartY = 3;
+    public int enemyStartX = 5, enemyStartY = 5;
 
     KeyHandler keyHandler = new KeyHandler();
     Thread gameThread;
@@ -32,6 +41,10 @@ public class GamePanel extends JPanel implements Runnable {
 
     public GamePanel() {
 
+        map = Map.loadMap("Maps/Map01.txt", maxScreenRow, maxScreenCol);
+
+        Node.initializeGrid();
+
 
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.WHITE);
@@ -39,10 +52,9 @@ public class GamePanel extends JPanel implements Runnable {
         this.addKeyListener(keyHandler);
         this.setFocusable(true);
 
-        platforms.add(new Rectangle(0, screenHeight - tileSize, screenWidth, tileSize * 2));
-
-        player = new Player(tileSize * 3, tileSize * 3, scale, 150, 1, 10);
-        enemies.add(new Enemy(tileSize * 4, tileSize * 4, scale/4, 3 * tileSize, 1, 4));
+        bottomBar = new Rectangle(0, screenHeight - tileSize, screenWidth, tileSize * 2);
+        player = new Player(tileSize * playerStartX, tileSize * playerStartY, scale, 150, 1, 10);
+        enemies.add(new Enemy(tileSize * enemyStartX, tileSize * enemyStartY, scale / 4, 30 * tileSize, 1, 4));
 
 
     }
@@ -51,7 +63,19 @@ public class GamePanel extends JPanel implements Runnable {
         return tileSize;
     }
 
-    public void  startGameThread() {
+    public static int getScreenWidth() {
+        return screenWidth;
+    }
+
+    public static int getScreenHeight() {
+        return screenHeight;
+    }
+
+    public static int getMaxScreenCol() {return maxScreenCol;}
+
+    public static int getMaxScreenRow() {return maxScreenRow;}
+
+    public void startGameThread() {
         gameThread = new Thread(this);
         gameThread.start();
     }
@@ -74,7 +98,7 @@ public class GamePanel extends JPanel implements Runnable {
             player.update();
             for (Entity e : enemies) {
                 if (e instanceof Enemy) {
-                    e.update(player);
+                    e.update(player, debugMode);
 
                 }
             }
@@ -99,18 +123,16 @@ public class GamePanel extends JPanel implements Runnable {
 
             enemies.removeIf(e -> e.health <= 0);
         }
-
     }
 
     public void paintComponent(Graphics g) {
 
         super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D) g;
 
         g2.setColor(Color.black);
-        for (Rectangle platform : GamePanel.platforms) {
-            g2.fillRect(platform.x, platform.y, platform.width, platform.height);
-        }
+        drawMap(g2, map);
+        g2.fill(bottomBar);
         player.draw(g2, debugMode);
         for (Entity enemy : enemies) {
             enemy.draw(g2, debugMode);
@@ -129,7 +151,25 @@ public class GamePanel extends JPanel implements Runnable {
             g2.drawString("Oof", x, y);
         }
 
+        Node.draw(g2, maxScreenCol, maxScreenRow, debugMode);
+
         g2.dispose();
+
+    }
+
+    public void drawMap(Graphics2D g2, int[][] map) {
+
+        int tileSize = GamePanel.getTileSize();
+
+        for (int row = 0; row < map.length; row++) {
+            for (int col = 0; col < map[row].length; col++) {
+
+                int tileNum = map[row][col];
+                Tiles tile = tiles[tileNum];
+                g2.drawImage(tile.tileImg, col * tileSize, row * tileSize, tileSize, tileSize, null);
+            }
+        }
+
 
     }
 }

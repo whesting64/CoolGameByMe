@@ -26,9 +26,9 @@ public class Player extends Entity {
     private BufferedImage playerImage = null;
 
     public Player(int startX, int startY, int speed, int viewRange, int lookDirection, int health) {
-        super(startX, startY, speed , viewRange, lookDirection, health);
+        super(startX, startY, speed, viewRange, lookDirection, health);
         try {
-            playerImage = ImageIO.read(new File("img/coolFortniteGuy.png"));
+            playerImage = ImageIO.read(new File("img/Dwayne_The_Rock_Man_Johnson.png"));
         } catch (IOException e) {
             System.err.println("Error loading coolFortniteGuy.png");
         }
@@ -89,7 +89,9 @@ public class Player extends Entity {
                 if (other == this) continue;
                 Rectangle otherHurtBox = new Rectangle(other.entityX, other.entityY, GamePanel.getTileSize(), GamePanel.getTileSize());
 
-                if (hitBox.intersects(otherHurtBox)) {other.getHit();}
+                if (hitBox.intersects(otherHurtBox)) {
+                    other.getHit();
+                }
             }
         }
         if (!KeyHandler.upArrowPressed) upHit = false;
@@ -102,7 +104,9 @@ public class Player extends Entity {
                 if (other == this) continue;
                 Rectangle otherHurtBox = new Rectangle(other.entityX, other.entityY, GamePanel.getTileSize(), GamePanel.getTileSize());
 
-                if (hitBox.intersects(otherHurtBox)) {other.getHit();}
+                if (hitBox.intersects(otherHurtBox)) {
+                    other.getHit();
+                }
             }
         }
         if (!KeyHandler.downArrowPressed) downHit = false;
@@ -115,7 +119,9 @@ public class Player extends Entity {
                 if (other == this) continue;
                 Rectangle otherHurtBox = new Rectangle(other.entityX, other.entityY, GamePanel.getTileSize(), GamePanel.getTileSize());
 
-                if (hitBox.intersects(otherHurtBox)) {other.getHit();}
+                if (hitBox.intersects(otherHurtBox)) {
+                    other.getHit();
+                }
             }
         }
         if (!KeyHandler.leftArrowPressed) leftHit = false;
@@ -128,7 +134,9 @@ public class Player extends Entity {
                 if (other == this) continue;
                 Rectangle otherHurtBox = new Rectangle(other.entityX, other.entityY, GamePanel.getTileSize(), GamePanel.getTileSize());
 
-                if (hitBox.intersects(otherHurtBox)) {other.getHit();}
+                if (hitBox.intersects(otherHurtBox)) {
+                    other.getHit();
+                }
             }
         }
         if (!KeyHandler.rightArrowPressed) rightHit = false;
@@ -141,48 +149,48 @@ public class Player extends Entity {
     }
 
     @Override
-    public void update(Player player) {
+    public void update(Player player, boolean debugMode) {
 
     }
 
     @Override
     public void draw(Graphics2D g2, boolean debugMode) {
-            swordSwing();
+        swordSwing();
 
-            g2.setColor(Color.magenta);
-            if (upHitTimer > 0) {
-                g2.drawRect(entityX, entityY - GamePanel.getTileSize(), GamePanel.getTileSize(), GamePanel.getTileSize());
-            } else if (leftHitTimer > 0) {
-                g2.drawRect(entityX - GamePanel.getTileSize(), entityY, GamePanel.getTileSize(), GamePanel.getTileSize());
-            } else if (downHitTimer > 0) {
-                g2.drawRect(entityX, entityY + GamePanel.getTileSize(), GamePanel.getTileSize(), GamePanel.getTileSize());
-            } else if (rightHitTimer > 0) {
-                g2.drawRect(entityX + GamePanel.getTileSize(), entityY, GamePanel.getTileSize(), GamePanel.getTileSize());
-            }
-            g2.setColor(Color.black);
-            g2.drawImage(playerImage, entityX, entityY, GamePanel.getTileSize(), GamePanel.getTileSize(), null);
-            if (health > 0) {
-                g2.drawString(String.valueOf(health), entityX, entityY);
-            } else {
-                g2.drawString("dead", entityX, entityY);
-            }
+        g2.setColor(Color.magenta);
+        if (upHitTimer > 0) {
+            g2.drawRect(entityX, entityY - GamePanel.getTileSize(), GamePanel.getTileSize(), GamePanel.getTileSize());
+        } else if (leftHitTimer > 0) {
+            g2.drawRect(entityX - GamePanel.getTileSize(), entityY, GamePanel.getTileSize(), GamePanel.getTileSize());
+        } else if (downHitTimer > 0) {
+            g2.drawRect(entityX, entityY + GamePanel.getTileSize(), GamePanel.getTileSize(), GamePanel.getTileSize());
+        } else if (rightHitTimer > 0) {
+            g2.drawRect(entityX + GamePanel.getTileSize(), entityY, GamePanel.getTileSize(), GamePanel.getTileSize());
+        }
+        g2.setColor(Color.black);
+        g2.drawImage(playerImage, entityX, entityY, GamePanel.getTileSize(), GamePanel.getTileSize(), null);
+        if (health > 0) {
+            g2.drawString(String.valueOf(health), entityX, entityY);
+        } else {
+            g2.drawString("dead", entityX, entityY);
+        }
 
-            if (debugMode) {
-                g2.setColor(Color.blue);
-                g2.drawRect(entityX + dx, entityY, GamePanel.getTileSize(), GamePanel.getTileSize());
-                g2.setColor(Color.red);
-                g2.drawRect(entityX, entityY + dy, GamePanel.getTileSize(), GamePanel.getTileSize());
-                g2.setColor(Color.cyan);
-                if (lookDirection == 1) {
-                    g2.drawRect(entityX + (GamePanel.getTileSize() / 2), entityY + (GamePanel.getTileSize() / 2), 1, -GamePanel.getTileSize());
-                } else if (lookDirection == 2) {
-                    g2.drawRect(entityX + (GamePanel.getTileSize() / 2), entityY + (GamePanel.getTileSize() / 2), -GamePanel.getTileSize(), 1);
-                } else if (lookDirection == 3) {
-                    g2.drawRect(entityX + (GamePanel.getTileSize() / 2), entityY + (GamePanel.getTileSize() / 2), 1, GamePanel.getTileSize());
-                } else if (lookDirection == 4) {
-                    g2.drawRect(entityX + (GamePanel.getTileSize() / 2), entityY + (GamePanel.getTileSize() / 2), GamePanel.getTileSize(), 1);
-                }
+        if (debugMode) {
+            g2.setColor(Color.blue);
+            g2.drawRect(entityX + dx, entityY, GamePanel.getTileSize(), GamePanel.getTileSize());
+            g2.setColor(Color.red);
+            g2.drawRect(entityX, entityY + dy, GamePanel.getTileSize(), GamePanel.getTileSize());
+            g2.setColor(Color.cyan);
+            if (lookDirection == 1) {
+                g2.drawRect(entityX + (GamePanel.getTileSize() / 2), entityY + (GamePanel.getTileSize() / 2), 1, -GamePanel.getTileSize());
+            } else if (lookDirection == 2) {
+                g2.drawRect(entityX + (GamePanel.getTileSize() / 2), entityY + (GamePanel.getTileSize() / 2), -GamePanel.getTileSize(), 1);
+            } else if (lookDirection == 3) {
+                g2.drawRect(entityX + (GamePanel.getTileSize() / 2), entityY + (GamePanel.getTileSize() / 2), 1, GamePanel.getTileSize());
+            } else if (lookDirection == 4) {
+                g2.drawRect(entityX + (GamePanel.getTileSize() / 2), entityY + (GamePanel.getTileSize() / 2), GamePanel.getTileSize(), 1);
             }
+        }
 
     }
 }

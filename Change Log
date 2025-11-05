@@ -30,3 +30,13 @@ Added enemy takes damage when it makes contact with players sword swing
 Added player death mechanic where the game loop breaks and death message is shown
 
 Added enemy death mechanic where it is removed from ArrayList and is removed from the map
+
+Version 0.0.4 8/21/25
+
+Added txt string reading to read txt file map
+
+Uses read string to place tiles on panel
+
+Added collision var to tiles
+
+Added placeholders for tiles (thx FireBlade)

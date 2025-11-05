@@ -14,6 +14,7 @@ public class KeyHandler implements KeyListener {
     public static boolean downArrowPressed;
     public static boolean leftArrowPressed;
     public static boolean rightArrowPressed;
+    public static boolean nextPressed;
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -23,33 +24,36 @@ public class KeyHandler implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
 
-        int code =e.getKeyCode();
-        if(code == KeyEvent.VK_W){
+        int code = e.getKeyCode();
+        if (code == KeyEvent.VK_W) {
             upPressed = true;
         }
-        if(code == KeyEvent.VK_S){
+        if (code == KeyEvent.VK_S) {
             downPressed = true;
         }
-        if(code == KeyEvent.VK_A){
+        if (code == KeyEvent.VK_A) {
             leftPressed = true;
         }
-        if(code == KeyEvent.VK_D){
+        if (code == KeyEvent.VK_D) {
             rightPressed = true;
         }
-        if(code == KeyEvent.VK_SPACE){
+        if (code == KeyEvent.VK_SPACE) {
             spacePressed = true;
         }
-        if(code == KeyEvent.VK_UP){
+        if (code == KeyEvent.VK_UP) {
             upArrowPressed = true;
         }
-        if(code == KeyEvent.VK_DOWN){
+        if (code == KeyEvent.VK_DOWN) {
             downArrowPressed = true;
         }
-        if(code == KeyEvent.VK_LEFT){
+        if (code == KeyEvent.VK_LEFT) {
             leftArrowPressed = true;
         }
-        if(code == KeyEvent.VK_RIGHT){
+        if (code == KeyEvent.VK_RIGHT) {
             rightArrowPressed = true;
+        }
+        if (code == KeyEvent.VK_N) {
+            nextPressed = true;
         }
 
     }
@@ -57,32 +61,32 @@ public class KeyHandler implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
 
-        int code =e.getKeyCode();
-        if(code == KeyEvent.VK_W){
+        int code = e.getKeyCode();
+        if (code == KeyEvent.VK_W) {
             upPressed = false;
         }
-        if(code == KeyEvent.VK_S){
+        if (code == KeyEvent.VK_S) {
             downPressed = false;
         }
-        if(code == KeyEvent.VK_A){
+        if (code == KeyEvent.VK_A) {
             leftPressed = false;
         }
-        if(code == KeyEvent.VK_D){
+        if (code == KeyEvent.VK_D) {
             rightPressed = false;
         }
-        if(code == KeyEvent.VK_SPACE){
+        if (code == KeyEvent.VK_SPACE) {
             spacePressed = false;
         }
-        if(code == KeyEvent.VK_UP){
+        if (code == KeyEvent.VK_UP) {
             upArrowPressed = false;
         }
-        if(code == KeyEvent.VK_DOWN){
+        if (code == KeyEvent.VK_DOWN) {
             downArrowPressed = false;
         }
-        if(code == KeyEvent.VK_LEFT){
+        if (code == KeyEvent.VK_LEFT) {
             leftArrowPressed = false;
         }
-        if(code == KeyEvent.VK_RIGHT){
+        if (code == KeyEvent.VK_RIGHT) {
             rightArrowPressed = false;
         }
 
