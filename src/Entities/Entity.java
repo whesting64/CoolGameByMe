@@ -14,6 +14,7 @@ public abstract class Entity {
     public int viewRange;
     public int lookDirection;
     public int dx = 0, dy = 0;
+    public boolean onPath = false;
     public int health;
     int immunity = 120;
     int immunityTimer = 0;
