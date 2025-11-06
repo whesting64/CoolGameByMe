@@ -40,6 +40,7 @@ public class Enemy extends Entity {
             if(gp.pathfinder.search()) {
 
             };
+
         }
         if (Math.abs(diffx) > Math.abs(diffy)) {
             lookDirection = (diffx < 0) ? 2 : 4; // Left or Right

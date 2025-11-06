@@ -28,6 +28,7 @@ public class Pathfinding {
         while(col < GamePanel.getMaxScreenCol() && row < GamePanel.getMaxScreenRow()) {
 
             node[col][row] = new Node(col, row);
+
             col++;
             if(col == GamePanel.getMaxScreenCol()) {
                 col = 0;

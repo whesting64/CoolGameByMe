@@ -27,7 +27,6 @@ public class Node extends JButton implements ActionListener {
         setForeground(Color.BLACK);
         addActionListener(this);
 
-
     }
 
     public void setAsStart() {

@@ -27,7 +27,6 @@ public abstract class Entity {
         this.viewRange = viewRange;
         this.lookDirection = lookDirection;
         this.health = health;
-
     }
 
     public void moveEntity() {

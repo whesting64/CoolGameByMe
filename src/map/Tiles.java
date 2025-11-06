@@ -19,10 +19,10 @@ public class Tiles {
     public static Tiles[] loadTilesImg() {
         Tiles[] tiles = new Tiles[10];
         try {
+
             tiles[0] = new Tiles(ImageIO.read(new File("img/Tiles/Grass.png")), false);
             tiles[1] = new Tiles(ImageIO.read(new File("img/Tiles/Wall.png")), true);
             tiles[2] = new Tiles(ImageIO.read(new File("img/Tiles/Water.png")), true);
-
         } catch (IOException e) {
             System.out.println("cant load tiles");
         }

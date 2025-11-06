@@ -191,6 +191,5 @@ public class Player extends Entity {
                 g2.drawRect(entityX + (GamePanel.getTileSize() / 2), entityY + (GamePanel.getTileSize() / 2), GamePanel.getTileSize(), 1);
             }
         }
-
     }
 }
