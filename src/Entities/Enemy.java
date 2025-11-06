@@ -2,6 +2,7 @@ package Entities;
 
 import Engine.GamePanel;
 import Engine.KeyHandler;
+import ai.Node;
 import ai.Pathfinding;
 
 import javax.imageio.ImageIO;
@@ -14,6 +15,7 @@ public class Enemy extends Entity {
 
     private BufferedImage enemyImage = null;
     private GamePanel gp;
+    private int pathIndex = 0;
 
     public Enemy(int startX, int startY, int speed, int viewRange, int lookDirection, int health, GamePanel gp) {
         super(startX, startY, speed, viewRange, lookDirection, health);
@@ -28,6 +30,7 @@ public class Enemy extends Entity {
 
     @Override
     public void update(Player player, boolean debugMode) {
+
         double diffx = player.entityX - this.entityX;
         double diffy = player.entityY - this.entityY;
 
@@ -37,32 +40,29 @@ public class Enemy extends Entity {
         if (distance <= this.viewRange + ((double) GamePanel.getTileSize() / 2)) {
             onPath = true;
             gp.pathfinder.setNodes(this.getEntityXGrid(), this.getEntityYGrid(), player.getEntityXGrid(), player.getEntityYGrid());
+            gp.pathfinder.search();
 
-            if(gp.pathfinder.search()) {
+            if(!gp.pathfinder.pathList.isEmpty() && pathIndex < gp.pathfinder.pathList.size()) {
 
-                //entity bounds
-                int enLeftX = this.entityX;
-                int enRightX = this.entityX + GamePanel.getTileSize();
-                int enTopY = this.entityY;
-                int enBottomY = this.entityY + GamePanel.getTileSize();
+                Node targetNode = gp.pathfinder.pathList.get(pathIndex);
+                double nextX = targetNode.col * GamePanel.getTileSize() + GamePanel.getTileSize() / 2.0;
+                double nextY = targetNode.row * GamePanel.getTileSize() + GamePanel.getTileSize() / 2.0;
 
-                int nextX = gp.pathfinder.pathList.get(0).col * GamePanel.getTileSize();
-                int nextY = gp.pathfinder.pathList.get(0).row * GamePanel.getTileSize();
+                double vx = nextX - (entityX + GamePanel.getTileSize() / 2.0);
+                double vy = nextY - (entityY + GamePanel.getTileSize() / 2.0);
+                double mag = Math.sqrt(vx * vx + vy * vy);
 
-                if (distance <= this.viewRange + ((double) GamePanel.getTileSize() /2)) {
-                    if(enTopY > nextY && enLeftX >= nextX && enRightX < nextX + GamePanel.getTileSize()) {
-                        dy = entitySpeed;
-                    }
-                    else if(enTopY < nextY && enLeftX >= nextX && enRightX < nextX + GamePanel.getTileSize()) {
-                        dy = -entitySpeed;
-                    }
-                    else if (enTopY >= nextY && enBottomY < nextY + GamePanel.getTileSize()) {
-                        if(enLeftX > nextX) {
-                            dx = -entitySpeed;
-                        }
-                        if(enRightX < nextX) {
-                            dx = entitySpeed;
-                        }
+                if (mag > 0){
+                    vx /= mag;
+                    vy /= mag;
+                    dx = (int) Math.round(vx * entitySpeed);
+                    dy = (int) Math.round(vy * entitySpeed);
+                }
+
+                if (mag < entitySpeed){
+                    pathIndex++;
+                    if (pathIndex >= gp.pathfinder.pathList.size()) {
+                        pathIndex = gp.pathfinder.pathList.size() - 1;
                     }
                 }
             };
