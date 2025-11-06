@@ -30,6 +30,7 @@ public class Enemy extends Entity {
     public void update(Player player, boolean debugMode) {
         double diffx = player.entityX - this.entityX;
         double diffy = player.entityY - this.entityY;
+
         dx = 0;
         dy = 0;
         double distance = Math.sqrt(diffx * diffx + diffy * diffy);
@@ -39,6 +40,31 @@ public class Enemy extends Entity {
 
             if(gp.pathfinder.search()) {
 
+                //entity bounds
+                int enLeftX = this.entityX;
+                int enRightX = this.entityX + GamePanel.getTileSize();
+                int enTopY = this.entityY;
+                int enBottomY = this.entityY + GamePanel.getTileSize();
+
+                int nextX = gp.pathfinder.pathList.get(0).col * GamePanel.getTileSize();
+                int nextY = gp.pathfinder.pathList.get(0).row * GamePanel.getTileSize();
+
+                if (distance <= this.viewRange + ((double) GamePanel.getTileSize() /2)) {
+                    if(enTopY > nextY && enLeftX >= nextX && enRightX < nextX + GamePanel.getTileSize()) {
+                        dy = entitySpeed;
+                    }
+                    else if(enTopY < nextY && enLeftX >= nextX && enRightX < nextX + GamePanel.getTileSize()) {
+                        dy = -entitySpeed;
+                    }
+                    else if (enTopY >= nextY && enBottomY < nextY + GamePanel.getTileSize()) {
+                        if(enLeftX > nextX) {
+                            dx = -entitySpeed;
+                        }
+                        if(enRightX < nextX) {
+                            dx = entitySpeed;
+                        }
+                    }
+                }
             };
 
         }
@@ -47,10 +73,7 @@ public class Enemy extends Entity {
         } else {
             lookDirection = (diffy < 0) ? 1 : 3; // Up or Down
         }
-
-        if (!debugMode || KeyHandler.nextPressed) {
-            moveEntity();
-        }
+        this.moveEntity();
 
         if (immunityTimer > 0) immunityTimer--;
 

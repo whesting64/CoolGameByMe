@@ -28,8 +28,8 @@ public class GamePanel extends JPanel implements Runnable {
     public static int[][] map;
     public static Tiles[] tiles = Tiles.loadTilesImg();
 
-    public int playerStartX = 3, playerStartY = 3;
-    public int enemyStartX = 5, enemyStartY = 5;
+    public int playerStartX = 6, playerStartY = 9;
+    public int enemyStartX = 6, enemyStartY = 6;
 
     KeyHandler keyHandler = new KeyHandler();
     Thread gameThread;
@@ -53,7 +53,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         bottomBar = new Rectangle(0, screenHeight - tileSize, screenWidth, tileSize * 2);
         player = new Player(tileSize * playerStartX, tileSize * playerStartY, scale, 150, 1, 10);
-        enemies.add(new Enemy(tileSize * enemyStartX, tileSize * enemyStartY, scale / 4, 3 * tileSize, 1, 4, this));
+        enemies.add(new Enemy(tileSize * enemyStartX, tileSize * enemyStartY, scale / 4, 30 * tileSize, 1, 4, this));
     }
 
     public static int getTileSize() {
