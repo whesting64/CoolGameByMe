@@ -3,7 +3,7 @@ package Engine;
 import Entities.Entity;
 import Entities.Player;
 import Entities.Enemy;
-import Pathfinding.Node;
+import ai.Pathfinding;
 import map.Map;
 import map.Tiles;
 
@@ -38,13 +38,12 @@ public class GamePanel extends JPanel implements Runnable {
     public static ArrayList<Rectangle> platforms = new ArrayList<>();
     public static Player player;
     public static ArrayList<Entity> enemies = new ArrayList<>();
+    public Pathfinding pathfinder = new Pathfinding(this);
 
     public GamePanel() {
 
         map = Map.loadMap("Maps/Map01.txt", maxScreenRow, maxScreenCol);
-
-        Node.initializeGrid();
-
+        pathfinder.instantaiteNodes();
 
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.WHITE);
@@ -54,7 +53,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         bottomBar = new Rectangle(0, screenHeight - tileSize, screenWidth, tileSize * 2);
         player = new Player(tileSize * playerStartX, tileSize * playerStartY, scale, 150, 1, 10);
-        enemies.add(new Enemy(tileSize * enemyStartX, tileSize * enemyStartY, scale / 4, 30 * tileSize, 1, 4));
+        enemies.add(new Enemy(tileSize * enemyStartX, tileSize * enemyStartY, scale / 4, 3 * tileSize, 1, 4, this));
 
 
     }
@@ -95,6 +94,7 @@ public class GamePanel extends JPanel implements Runnable {
                 KeyHandler.spacePressed = false;
             }
 
+
             player.update();
             for (Entity e : enemies) {
                 if (e instanceof Enemy) {
@@ -123,6 +123,7 @@ public class GamePanel extends JPanel implements Runnable {
 
             enemies.removeIf(e -> e.health <= 0);
         }
+
     }
 
     public void paintComponent(Graphics g) {
@@ -133,6 +134,18 @@ public class GamePanel extends JPanel implements Runnable {
         g2.setColor(Color.black);
         drawMap(g2, map);
         g2.fill(bottomBar);
+
+        if (debugMode && pathfinder.pathList != null) {
+            g2.setColor(new Color(255, 165, 0, 120)); // semi-transparent green
+            int tileSize = getTileSize();
+            for (ai.Node n : pathfinder.pathList) {
+                int x = n.col * tileSize;
+                int y = n.row * tileSize;
+                g2.fillRect(x, y, tileSize, tileSize);
+            }
+        }
+
+
         player.draw(g2, debugMode);
         for (Entity enemy : enemies) {
             enemy.draw(g2, debugMode);
@@ -151,8 +164,6 @@ public class GamePanel extends JPanel implements Runnable {
             g2.drawString("Oof", x, y);
         }
 
-        Node.draw(g2, maxScreenCol, maxScreenRow, debugMode);
-
         g2.dispose();
 
     }
@@ -169,7 +180,6 @@ public class GamePanel extends JPanel implements Runnable {
                 g2.drawImage(tile.tileImg, col * tileSize, row * tileSize, tileSize, tileSize, null);
             }
         }
-
-
     }
+
 }

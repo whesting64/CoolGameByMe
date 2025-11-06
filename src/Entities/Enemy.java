@@ -2,6 +2,7 @@ package Entities;
 
 import Engine.GamePanel;
 import Engine.KeyHandler;
+import ai.Pathfinding;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -12,9 +13,11 @@ import java.io.IOException;
 public class Enemy extends Entity {
 
     private BufferedImage enemyImage = null;
+    private GamePanel gp;
 
-    public Enemy(int startX, int startY, int speed, int viewRange, int lookDirection, int health) {
+    public Enemy(int startX, int startY, int speed, int viewRange, int lookDirection, int health, GamePanel gp) {
         super(startX, startY, speed, viewRange, lookDirection, health);
+        this.gp = gp;
         try {
             enemyImage = ImageIO.read(new File("img/zombie.png"));
         } catch (IOException e) {
@@ -31,26 +34,18 @@ public class Enemy extends Entity {
         dy = 0;
         double distance = Math.sqrt(diffx * diffx + diffy * diffy);
         if (distance <= this.viewRange + ((double) GamePanel.getTileSize() / 2)) {
-            if (player.entityX < this.entityX) {
-                dx = -entitySpeed;
-            } else if (player.entityX > this.entityX) {
-                dx = entitySpeed;
-            }
+            onPath = true;
+            gp.pathfinder.setNodes(this.getEntityXGrid(), this.getEntityYGrid(), player.getEntityXGrid(), player.getEntityYGrid());
 
-            if (player.entityY < this.entityY) {
-                dy = -entitySpeed;
-            }
-            if (player.entityY > this.entityY) {
-                dy = entitySpeed;
-            }
+            if(gp.pathfinder.search()) {
+
+            };
         }
         if (Math.abs(diffx) > Math.abs(diffy)) {
             lookDirection = (diffx < 0) ? 2 : 4; // Left or Right
         } else {
             lookDirection = (diffy < 0) ? 1 : 3; // Up or Down
         }
-
-
 
         if (!debugMode || KeyHandler.nextPressed) {
             moveEntity();
@@ -59,7 +54,6 @@ public class Enemy extends Entity {
         if (immunityTimer > 0) immunityTimer--;
 
     }
-
 
     @Override
     public void draw(Graphics2D g2, boolean debugMode) {
